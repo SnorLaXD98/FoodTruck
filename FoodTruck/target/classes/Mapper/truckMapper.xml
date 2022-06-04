@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org.dtd.mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sbs.foodtruck.Mapper.FoodTruckMapper">
+
+            <!-- ㅡㅡㅡㅡㅡㅡㅡㅡ FoodTruck 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡ-->
+    <!-- 푸드트럭  삽입 -->
+            <insert id="insertFoodTruck" parameterType="FoodTruckDTO">
+                <!--INSERT INTO member(name,id,phone) VALUES ('이순신','mr.soon','010-1111-2222');-->
+                INSERT INTO foodtruck(
+                          truckName
+                        , userIdx
+                        , menuClassfi
+                        , truckIntroduce
+                )VALUES(
+                          #{truckName}
+                        , #{userIdx}
+                        , #{menuClassfi}
+                        , #{truckIntroduce}
+                );
+            </insert>
+
+
+    <!-- 푸드트럭 검색 (이름) -->
+            <select id="selectFoodTruckname" parameterType ="String" resultType ="FoodTruckDTO">
+                SELECT        truckIdx
+                            , truckName
+                            , truckStatus
+                            , truckProfileimgURL
+                            , menuClassfi
+                            , truckIntroduce
+                            , truckRating
+                FROM
+                              foodtruck
+                WHERE
+                              truckName = #{truckName}
+                ;
+            </select>
+
+
+    <!-- 푸드트럭 검색 (idx) -->
+            <select id="selectFoodTruckIdx" parameterType ="int" resultType ="FoodTruckDTO">
+                SELECT
+                          truckIdx
+                        , truckName
+                        , truckStatus
+                        , truckProfileimgURL
+                        , menuClassfi
+                        , truckIntroduce
+                        , truckRating
+                FROM
+                          foodtruck
+                WHERE
+                          truckIdx = #{truckIdx}
+                ;
+            </select>
+
+    <!-- 푸드트럭 오픈 -->
+            <update id = "openFoodTruckIdx" parameterType ="int" >
+                UPDATE
+                          foodtruck
+                SET
+                          truckStatus = '1'
+                WHERE
+                          truckIdx = #{truckIdx}
+                ;
+            </update>
+
+    <!-- 푸드트럭 닫음 -->
+            <update id = "closeFoodTruckIdx" parameterType ="int" >
+                UPDATE
+                          foodtruck
+                SET
+                          truckStatus = '0'
+                WHERE
+                          truckIdx = #{truckIdx}
+                ;
+            </update>
+
+            <select id="searchFoodTruckIdx" parameterType ="String" resultType ="int">
+                SELECT
+                      truckIdx
+                FROM
+                    foodtruck
+                WHERE
+                    truckName = #{truckName}
+                ;
+            </select>
+
+
+
+
+    <!-- ㅡㅡㅡㅡㅡㅡㅡㅡ User 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡ-->
+
+    <!-- 유저 삽입 -->
+            <insert id ="insertUser" parameterType = "UserDTO">
+                INSERT INTO user (
+                            userName
+                            , userNickname
+                            , userEmail
+                            , userPhone
+                            , userPw
+                            , userProfileimgURL
+                ) values (
+                              #{userName}
+                            , #{userNickname}
+                            , #{userEmail}
+                            , #{userPhone}
+                            , #{userPw}
+                            , #{userProfileimgURL}
+
+                );
+        </insert>
+
+                 <!-- ㅡㅡㅡㅡㅡㅡㅡㅡ Menu 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡ-->
+    <!-- 메뉴 삽입 -->
+             <insert id="insertMenu" parameterType  ="MenuDTO">
+                INSERT INTO menu (
+                          menu
+                        , truckIdx
+                        , menuClassfi
+                        , cost
+                        , menuIntroduce
+                ) values (
+                          #{menu}
+                        , #{truckIdx}
+                        , #{menuClassfi}
+                        , #{cost}
+                        , #{menuIntroduce}
+                );
+            </insert>
+
+    <!-- 메뉴 검색 반환값 푸드트럭 -->
+            <select id="searchMenu" parameterType ="String" resultType ="FoodTruckDTO" >
+                SELECT
+                          truckIdx
+                        , truckName
+                        , truckStatus
+                        , truckProfileimgURI
+                        , menuClassfi
+                        , truckIntroduce
+                        , truckRating
+                FROM
+                          foodtruck
+                WHERE
+                          menuClassfi = #{menuClassfi}
+                ;
+            </select>
+
+
+        <!-- ㅡㅡㅡㅡㅡㅡㅡㅡ Comment 쿼리문 ㅡㅡㅡㅡㅡㅡㅡㅡ-->
+
+    <!-- 메뉴 검색 -->
+            <insert id="insertComment" parameterType  ="CommentDTO">
+                INSERT INTO TruckComment (
+                          comment
+                        , commentedUserIdx
+                        , truckIdx
+                        , commentRating
+                ) values (
+                          #{comment}
+                        , #{commentedUserIdx}
+                        , #{truckIdx}
+                        , #{commentRating}
+
+                );
+            </insert>
+
+
+            <select id="truckComments" parameterType ="int" resultType ="CommentDTO" >
+                SELECT
+                          comment
+                        , commentedUserIdx
+                        , truckIdx
+                        , commentRating
+                FROM
+                          truckComment
+                WHERE
+                          truckIdx = #{truckIdx}
+                ;
+            </select>
+
+
+
+</mapper>
